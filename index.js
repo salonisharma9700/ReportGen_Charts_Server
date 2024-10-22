@@ -2,44 +2,43 @@ const express = require("express");
 const mongoose = require("mongoose");
 const cors = require("cors");
 const bodyParser = require("body-parser");
-// Initialize app and middleware
 const app = express();
 app.use(cors());
 app.use(bodyParser.json({ limit: '10mb' }));
 
-// Connect to MongoDB
+
 mongoose.connect("mongodb://localhost:27017/chartDB", {
   useNewUrlParser: true,
   useUnifiedTopology: true,
 });
 
 const chartSchema = new mongoose.Schema({
-  verbalGraph: Buffer,  // Store as buffer
+  verbalGraph: Buffer, 
   performanceGraph: Buffer, 
   misicProfileGraph: Buffer,
 });
 
-const ChartModel = mongoose.model("Chart", chartSchema);
+// const ChartModel = mongoose.model("Chart", chartSchema);
 
-// Route to save chart data
-app.post("/save-charts", async (req, res) => {
-  const { chartObj } = req.body;
 
-  const newChart = new ChartModel({
-    verbalGraph: Buffer.from(chartObj.verbalGraph, "base64"),
-    performanceGraph: Buffer.from(chartObj.performanceGraph, "base64"),
-    misicProfileGraph: Buffer.from(chartObj.misicProfileGraph, "base64"),
-  });
+// app.post("/save-charts", async (req, res) => {
+//   const { chartObj } = req.body;
 
-  try {
-    await newChart.save();
-    res.status(200).send("Charts saved successfully.");
-  } catch (error) {
-    res.status(500).send("Error saving charts: " + error.message);
-  }
-});
+//   const newChart = new ChartModel({
+//     verbalGraph: Buffer.from(chartObj.verbalGraph, "base64"),
+//     performanceGraph: Buffer.from(chartObj.performanceGraph, "base64"),
+//     misicProfileGraph: Buffer.from(chartObj.misicProfileGraph, "base64"),
+//   });
 
-// Start the server
+//   try {
+//     await newChart.save();
+//     res.status(200).send("Charts saved successfully.");
+//   } catch (error) {
+//     res.status(500).send("Error saving charts: " + error.message);
+//   }
+// });
+
+
 app.listen(5000, () => {
   console.log("Server is running on port 5000");
 });
